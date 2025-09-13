@@ -1,39 +1,134 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>極限運動社</title>
-        <link rel="icon" href="pageIcon.png">
-        <link rel="stylesheet" href="style.css"> <!--鑲嵌CSS-->
-        <meta property="og:title" content="極限運動社">
-        <meta property="og:description" content="一起成為逐風尋星的北護人">
-        <meta property="og:image" content="face.png">
-    </head>
-    <body>
-        <div id="enterScreen"></div>
-        <div class="inline" id="line1"></div>
-        <div class="inline" id="line2"></div>
-        <img src="roller.png" class="roller" id="i1">
-        <img src="roller.png" class="roller" id="i2">
-        <img src="roller.png" class="roller" id="i3">
-        <img src="roller.png" class="roller" id="i4">
+  <head>
+      <meta charset="utf-8"/>
+      <title>極限運動社</title>
+      <link rel="icon" href="res/pageIcon.png">
+      <link rel="stylesheet" href="style.css"> <!--鑲嵌CSS-->
+      <meta property="og:title" content="極限運動社">
+      <meta property="og:description" content="一起成為逐風尋星的北護人">
+      <meta property="og:image" content="res/face.png">
+  </head>
+  <body>
+    <!-- Header -->
+    <div id="header-container"></div>
 
-        <header>
-          <img src="title.png">
-        </header>
+    <div id="page-place">
+      <div id="test">
+        <div class="container">
+          <!-- Step 1: 測驗名稱與暱稱輸入 -->
+          <div id="step1">
+            <h1>北護最適合你的事</h1>
+            <p class="desc">用 MBTI 分析你在北護最適合嘗試的一件事</p>
+            <input type="text" id="nickname" placeholder="輸入你的暱稱">
+            <button onclick="nextStep(1)">下一步</button>
+          </div>
 
-        <div class="grid-container">
-          <a href="index.html" class="grid-item"><img src="list1.png"></a>
-          <a href="class.html" class="grid-item"><img src="list2.png"></a>
-          <a href="notice.html" class="grid-item"><img src="list3.png"></a>
-          <a href="info.html" class="grid-item"><img src="list4.png"></a>
-          <a href="social.html" class="grid-item"><img src="list5.png"></a>
+          <!-- Step 2: MBTI 選擇 -->
+          <div id="step2" class="hidden">
+            <h1>選擇你的 MBTI</h1>
+            <select id="mbti">
+              <option value="">-- 請選擇 --</option>
+              <option>ENTJ</option><option>INTJ</option><option>ENTP</option><option>INTP</option>
+              <option>ENFJ</option><option>INFJ</option><option>ENFP</option><option>INFP</option>
+              <option>ESTP</option><option>ISTP</option><option>ESFP</option><option>ISFP</option>
+              <option>ESTJ</option><option>ISTJ</option><option>ESFJ</option><option>ISFJ</option>
+            </select>
+            <button onclick="nextStep(2)">下一步</button>
+          </div>
+
+          <!-- Step 3: 分析動畫 -->
+          <div id="step3" class="hidden">
+            <h1>分析中...</h1>
+            <div class="progress-bar"><div class="progress" id="progress"></div></div>
+          </div>
+
+          <!-- Step 4: 結果 -->
+          <div id="result" class="hidden result">
+            <h2>你適合加入極限運動社</h2>
+            <p id="nicknameResult"></p>
+            <p id="mbtiResult"></p>
+            <p id="message"></p>
+            <button onclick="restart()">再測一次</button>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="block" id="section1"><a href="https://www.instagram.com/ntunhs_skate/?hl=zh-tw"><img src="social1.png"></a></div>
-
-        <footer>
-          <p class="footer-text">國立臺北護理健康大學<br>B06極限運動社</p>
-        </footer>
-    </body>
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    
+    <script src="loadComponents.js"></script>
+  </body>
 </html>
+<script>
+  const messages = {
+    ENTJ: "你喜歡站在舞台中央，被大家追隨嗎？極限運動社能給你大展身手的舞台：大型夜溜、社遊活動，總有人期待你帶頭衝鋒！",
+    INTJ: "你最愛把事情規劃得妥妥當當。這裡的活動多樣、挑戰十足，你能盡情設計屬於自己的練習路線與突破計畫，完全發揮你的長才。",
+    ENTP: "你討厭一成不變？這裡天天都有新花樣：不同的技巧、不同的挑戰、不同的朋友。你的腦袋有多少靈感，這裡就有多少機會讓你玩出花樣！",
+    INTP: "你喜歡鑽研原理，拆解動作背後的奧秘。極限運動社就是你的實驗場，滑行角度、速度曲線、重心轉換，全都能讓你盡情研究！",
+    ENFJ: "你熱愛人群、樂於照顧他人。這裡永遠有人需要鼓勵、需要陪伴，你的存在會讓大家更快樂、更有歸屬感。",
+    INFJ: "你希望做的事有深度、有意義。極限運動社不只是溜滑輪，而是一群人一起成長、突破的過程。你會在這裡找到價值感與方向感。",
+    ENFP: "你是氣氛製造機！在這裡，你隨便一個笑容就能點燃全場，夜溜和社遊有你在，就是最嗨的派對！",
+    INFP: "你天生溫暖、細膩。在社團中，總有人因為你的一句話感到被理解。極限運動社，就是能讓你展現溫柔力量的地方。",
+    ESTP: "你就是為了刺激而生！極限運動社充滿挑戰：速度感、急轉彎、夜溜冒險，每一刻都能讓你熱血沸騰！",
+    ISTP: "你喜歡親自動手、反覆練習。這裡有無數技巧等你去突破，從動作到器材，你都能盡情發揮『實幹家』的精神。",
+    ESFP: "你喜歡被看見，享受舞台。社團裡的每一次夜溜、每一張合照，都是你閃耀的時刻。大家都會記得：那個最亮眼的人，就是你！",
+    ISFP: "你感性細膩，喜歡在日常中找尋美。夜溜時的燈光、城市風景、滑行的節奏，這裡能讓你把『運動』變成一場藝術。",
+    ESTJ: "你喜歡事情有秩序，清楚明白。在這裡，你能享受到規劃完善的活動，大家配合默契，你會覺得一切井然有序。",
+    ISTJ: "你重視責任與可靠。極限運動社是一個穩定、有默契的團體，你能在這裡安心地付出、一步步累積成就。",
+    ESFJ: "你喜歡照顧別人，也喜歡在群體中被需要。社團裡總有人會向你靠近，因為你給人安心感，你會很快成為大家的好朋友。",
+    ISFJ: "你安靜卻溫暖，習慣默默守護。社團裡每個人的安全感，其實都來自像你這樣的人。這裡能給你一個安心又充實的歸屬。"
+  };
+
+  function nextStep(step) {
+    if (step === 1) {
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.remove('hidden');
+    } else if (step === 2) {
+      const mbti = document.getElementById('mbti').value;
+      if (!mbti) {
+        alert('請選擇 MBTI！');
+        return;
+      }
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step3').classList.remove('hidden');
+      animateProgress();
+    }
+  }
+
+  function animateProgress() {
+    let progress = document.getElementById('progress');
+    let width = 0;
+    let interval = setInterval(() => {
+      if (width >= 100) {
+        clearInterval(interval);
+        showResult();
+      } else {
+        width++;
+        progress.style.width = width + '%';
+      }
+    }, 30);
+  }
+
+  function showResult() {
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('result').classList.remove('hidden');
+
+    let nickname = document.getElementById('nickname').value;
+    let mbti = document.getElementById('mbti').value.toUpperCase();
+
+    document.getElementById('nicknameResult').innerText = '暱稱：' + nickname;
+    document.getElementById('mbtiResult').innerText = 'MBTI：' + mbti;
+    document.getElementById('message').innerText = messages[mbti] || "你的特質很獨特，極限運動社一樣適合你！";
+  }
+
+  function restart() {
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('step1').classList.remove('hidden');
+    document.getElementById('nickname').value = '';
+    document.getElementById('mbti').value = '';
+    document.getElementById('progress').style.width = '0%';
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

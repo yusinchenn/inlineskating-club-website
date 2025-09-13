@@ -18,6 +18,13 @@ body {
     padding: 0 ;
     font-family: 'Noto Serif TC', serif;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--first-color);
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /*進場*/
@@ -155,25 +162,33 @@ body {
 
 /*頁首*/
 header{
-    position:static;
-    background-color: #ffffff;
-    height: 10vh;
+    position: sticky;   /* 讓 Header 固定在頂部 */
+    top: 0;
+    background-color: var(--second-color);
+    height: 13vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items:center;
+    flex-direction: column;
     border: 0;
     padding: 0;
 }
 header img{
-    height: 50%;
+    height: calc(5vh - 5px);
+    padding-top: 5px;
+}
+
+#page-place {
+  flex: 1;  /* 自動填滿中間 */
+  min-height: calc(100vh - 13vh - 60px);
 }
 
 /*選單*/
 .grid-container {
     display:flex;
     width: 100%;
-    height: 5vh;
+    height: 8vh;
     margin: 0;
     border: 0;
     padding: 0;
@@ -192,31 +207,122 @@ header img{
 }
 
 /*內容*/
-.block{
-    position:static;
-    background-color:  rgb(22, 34, 71);
-    height: auto;
-    width: 100%;
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 30px 0 100px 0;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-track img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+/* 跑馬燈動畫：水平平移 */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* 播完一組剛好接續下一組 */
+}
+
+/* 滑鼠 hover 時暫停 */
+.marquee-container:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+#test{
+    background-color: #E8E2E1;
+    color: #4A4A48;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
 }
-.block img{
+.container {
+    background: #F2F1EF;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 400px;
     width: 100%;
+    text-align: center;
+}
+h1 {
+    color: #6B5B95;
+    margin-bottom: 10px;
+}
+p.desc {
+    color: #7F8C8D;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+input, select, button {
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    width: 90%;
+    font-size: 16px;
+}
+button {
+    background-color: #C3B1A0;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #A58D7F;
+}
+.hidden { display: none; }
+.progress-bar {
+    width: 100%;
+    background: #D6CFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+.progress {
+    width: 0;
+    height: 16px;
+    background: #6B5B95;
+}
+.result h2 {
+    font-size: 32px; /* 更大字體 */
+    color: #6B5B95;
+    margin-bottom: 20px;
+}
+.share-btn {
+    background-color: #9E9D89;
+    margin-top: 20px;
 }
 
 /*頁尾*/
 footer{
     position:static;
     background-color: rgb(255, 255, 255);
-    height: auto;
+    height: 60px;
     width: 100%;
     margin: 0;
     text-align: center; /* 让文字水平居中 */
-    padding: 15px 0 10px 0; /* 设置 footer 的上下内边距 */   
+    align-items: center;
+    padding: auto;  
 }
 footer p{
     margin: 0; /* 去除段落的默认外边距 */
     font-size: 0.6em; /* 设置文字大小 */
     line-height: 1.5; /* 设置行高 */
     font-size: 1rem;
+    background-color: var(--second-color);
 }
 

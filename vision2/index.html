@@ -16,23 +16,47 @@
     <!-- Header -->
     <div id="header-container"></div>
 
-    <div class="grid-container">
-      <a href="index.html" class="grid-item"><img src="res/list1.png"></a>
-      <a href="class.html" class="grid-item"><img src="res/list2.png"></a>
-      <a href="notice.html" class="grid-item"><img src="res/list3.png"></a>
-      <a href="info.html" class="grid-item"><img src="res/list4.png"></a>
-      <a href="social.html" class="grid-item"><img src="res/list5.png"></a>
-    </div>
+    <!-- 內容區 -->
+    <div id="page-place">
 
-    <div class="block" id="section1"><img src="res/page1.png"></div>
-    <div class="block" id="section2"><img src="res/page2.png"></div>
-    <div class="block" id="section3"><img src="res/page3.png"></div>
-    <div class="block" id="section4"><img src="res/page4.png"></div>
-    <div class="block" id="section5"><img src="res/page5.png"></div>
+      <img src="res/home.png" style="width: 100%; height: auto;">
+      
+      <!-- 照片輪播 -->
+      <div class="marquee-container">
+        <div class="marquee-track">
+          <img src="res/dp1.jpg">
+          <img src="res/dp2.jpg">
+          <img src="res/dp3.jpg">
+          <img src="res/dp4.jpg">
+          <img src="res/dp5.jpg">
+          <img src="res/dp1.jpg">
+          <img src="res/dp2.jpg">
+          <img src="res/dp3.jpg">
+          <img src="res/dp4.jpg">
+          <img src="res/dp5.jpg">
+        </div>
+      </div>
+
+    </div>
 
     <!-- Footer -->
     <div id="footer-container"></div>
-    
+
     <script src="loadComponents.js"></script>
   </body>
 </html>
+<script>
+  const marquee = document.querySelector(".marquee-track");
+  const container = document.querySelector(".marquee-container");
+
+  // 手指觸碰 → 暫停
+  container.addEventListener("touchstart", () => {
+    marquee.style.animationPlayState = "paused";
+  });
+
+  // 手指離開 → 恢復
+  container.addEventListener("touchend", () => {
+    marquee.style.animationPlayState = "running";
+  });
+
+</script>
